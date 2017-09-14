@@ -1,0 +1,303 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.homjie.kotor.dao.TxDescriptionDao">
+
+	<resultMap id="BaseResultMap" type="cn.homjie.kotor.model.TxDescription">
+		<id column="id" jdbcType="VARCHAR" property="id"/>
+		<result column="transaction" jdbcType="VARCHAR" property="transaction"/>
+		<result column="point" jdbcType="INTEGER" property="point"/>
+		<result column="class_name" jdbcType="VARCHAR" property="className"/>
+		<result column="method_name" jdbcType="VARCHAR" property="methodName"/>
+		<result column="infos_size" jdbcType="INTEGER" property="infosSize"/>
+		<result column="child_size" jdbcType="INTEGER" property="childSize"/>
+		<result column="times" jdbcType="INTEGER" property="times"/>
+		<result column="pid" jdbcType="VARCHAR" property="pid"/>
+		<result column="root" jdbcType="VARCHAR" property="root"/>
+		<result column="level" jdbcType="INTEGER" property="level"/>
+		<result column="order" jdbcType="INTEGER" property="order"/>
+		<result column="create_date" jdbcType="TIMESTAMP" property="createDate"/>
+		<result column="update_date" jdbcType="TIMESTAMP" property="updateDate"/>
+		<result column="del_flag" jdbcType="BIT" property="delFlag"/>
+	</resultMap>
+
+	<resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="cn.homjie.kotor.model.TxDescription">
+		<result column="params" jdbcType="LONGVARBINARY" property="params"/>
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		id, `transaction`, `point`, class_name, method_name, infos_size, child_size, times, pid,
+		root, `level`, `order`,
+		create_date, update_date, del_flag
+	</sql>
+	<sql id="Blob_Column_List">
+		params
+	</sql>
+
+	<select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
+		select
+		<include refid="Base_Column_List"/>
+		,
+		<include refid="Blob_Column_List"/>
+		from tx_description
+		where id = #{id,jdbcType=VARCHAR}
+	</select>
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+		delete from tx_description
+		where id = #{id,jdbcType=VARCHAR}
+	</delete>
+
+	<insert id="insert" parameterType="cn.homjie.kotor.model.TxDescription">
+		insert into tx_description (id, `transaction`, `point`,
+		class_name, method_name,
+		infos_size,
+		child_size, times, pid,
+		root, `level`, `order`,
+		create_date, update_date, del_flag,
+		params)
+		values
+		(#{id,jdbcType=VARCHAR}, #{transaction,jdbcType=VARCHAR}, #{point,jdbcType=INTEGER},
+		#{className,jdbcType=VARCHAR},
+		#{methodName,jdbcType=VARCHAR}, #{infosSize,jdbcType=INTEGER},
+		#{childSize,jdbcType=INTEGER},
+		#{times,jdbcType=INTEGER}, #{pid,jdbcType=VARCHAR},
+		#{root,jdbcType=VARCHAR}, #{level,jdbcType=INTEGER},
+		#{order,jdbcType=INTEGER},
+		#{createDate,jdbcType=TIMESTAMP}, #{updateDate,jdbcType=TIMESTAMP}, #{delFlag,jdbcType=BIT},
+		#{params,jdbcType=LONGVARBINARY})
+	</insert>
+
+	<insert id="insertSelective" parameterType="cn.homjie.kotor.model.TxDescription">
+		insert into tx_description
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="transaction != null">
+				`transaction`,
+			</if>
+			<if test="point != null">
+				`point`,
+			</if>
+			<if test="className != null">
+				class_name,
+			</if>
+			<if test="methodName != null">
+				method_name,
+			</if>
+			<if test="infosSize != null">
+				infos_size,
+			</if>
+			<if test="childSize != null">
+				child_size,
+			</if>
+			<if test="times != null">
+				times,
+			</if>
+			<if test="pid != null">
+				pid,
+			</if>
+			<if test="root != null">
+				root,
+			</if>
+			<if test="level != null">
+				`level`,
+			</if>
+			<if test="order != null">
+				`order`,
+			</if>
+			<if test="createDate != null">
+				create_date,
+			</if>
+			<if test="updateDate != null">
+				update_date,
+			</if>
+			<if test="delFlag != null">
+				del_flag,
+			</if>
+			<if test="params != null">
+				params,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=VARCHAR},
+			</if>
+			<if test="transaction != null">
+				#{transaction,jdbcType=VARCHAR},
+			</if>
+			<if test="point != null">
+				#{point,jdbcType=INTEGER},
+			</if>
+			<if test="className != null">
+				#{className,jdbcType=VARCHAR},
+			</if>
+			<if test="methodName != null">
+				#{methodName,jdbcType=VARCHAR},
+			</if>
+			<if test="infosSize != null">
+				#{infosSize,jdbcType=INTEGER},
+			</if>
+			<if test="childSize != null">
+				#{childSize,jdbcType=INTEGER},
+			</if>
+			<if test="times != null">
+				#{times,jdbcType=INTEGER},
+			</if>
+			<if test="pid != null">
+				#{pid,jdbcType=VARCHAR},
+			</if>
+			<if test="root != null">
+				#{root,jdbcType=VARCHAR},
+			</if>
+			<if test="level != null">
+				#{level,jdbcType=INTEGER},
+			</if>
+			<if test="order != null">
+				#{order,jdbcType=INTEGER},
+			</if>
+			<if test="createDate != null">
+				#{createDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="updateDate != null">
+				#{updateDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="delFlag != null">
+				#{delFlag,jdbcType=BIT},
+			</if>
+			<if test="params != null">
+				#{params,jdbcType=LONGVARBINARY},
+			</if>
+		</trim>
+	</insert>
+
+	<update id="updateByPrimaryKeySelective" parameterType="cn.homjie.kotor.model.TxDescription">
+		update tx_description
+		<set>
+			<if test="transaction != null">
+				`transaction` = #{transaction,jdbcType=VARCHAR},
+			</if>
+			<if test="point != null">
+				`point` = #{point,jdbcType=INTEGER},
+			</if>
+			<if test="className != null">
+				class_name = #{className,jdbcType=VARCHAR},
+			</if>
+			<if test="methodName != null">
+				method_name = #{methodName,jdbcType=VARCHAR},
+			</if>
+			<if test="infosSize != null">
+				infos_size = #{infosSize,jdbcType=INTEGER},
+			</if>
+			<if test="childSize != null">
+				child_size = #{childSize,jdbcType=INTEGER},
+			</if>
+			<if test="times != null">
+				times = #{times,jdbcType=INTEGER},
+			</if>
+			<if test="pid != null">
+				pid = #{pid,jdbcType=VARCHAR},
+			</if>
+			<if test="root != null">
+				root = #{root,jdbcType=VARCHAR},
+			</if>
+			<if test="level != null">
+				`level` = #{level,jdbcType=INTEGER},
+			</if>
+			<if test="order != null">
+				`order` = #{order,jdbcType=INTEGER},
+			</if>
+			<if test="createDate != null">
+				create_date = #{createDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="updateDate != null">
+				update_date = #{updateDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="delFlag != null">
+				del_flag = #{delFlag,jdbcType=BIT},
+			</if>
+			<if test="params != null">
+				params = #{params,jdbcType=LONGVARBINARY},
+			</if>
+		</set>
+		where id = #{id,jdbcType=VARCHAR}
+	</update>
+
+	<update id="updateByPrimaryKeyWithBLOBs" parameterType="cn.homjie.kotor.model.TxDescription">
+		update tx_description
+		set `transaction` =
+		#{transaction,jdbcType=VARCHAR},
+		`point` = #{point,jdbcType=INTEGER},
+		class_name = #{className,jdbcType=VARCHAR},
+		method_name = #{methodName,jdbcType=VARCHAR},
+		infos_size = #{infosSize,jdbcType=INTEGER},
+		child_size =
+		#{childSize,jdbcType=INTEGER},
+		times = #{times,jdbcType=INTEGER},
+		pid = #{pid,jdbcType=VARCHAR},
+		root =
+		#{root,jdbcType=VARCHAR},
+		`level` = #{level,jdbcType=INTEGER},
+		`order` = #{order,jdbcType=INTEGER},
+		create_date =
+		#{createDate,jdbcType=TIMESTAMP},
+		update_date = #{updateDate,jdbcType=TIMESTAMP},
+		del_flag = #{delFlag,jdbcType=BIT},
+		params = #{params,jdbcType=LONGVARBINARY}
+		where id = #{id,jdbcType=VARCHAR}
+	</update>
+
+	<update id="updateByPrimaryKey" parameterType="cn.homjie.kotor.model.TxDescription">
+		update tx_description
+		set `transaction` =
+		#{transaction,jdbcType=VARCHAR},
+		`point` = #{point,jdbcType=INTEGER},
+		class_name = #{className,jdbcType=VARCHAR},
+		method_name = #{methodName,jdbcType=VARCHAR},
+		infos_size = #{infosSize,jdbcType=INTEGER},
+		child_size =
+		#{childSize,jdbcType=INTEGER},
+		times = #{times,jdbcType=INTEGER},
+		pid = #{pid,jdbcType=VARCHAR},
+		root =
+		#{root,jdbcType=VARCHAR},
+		`level` = #{level,jdbcType=INTEGER},
+		`order` = #{order,jdbcType=INTEGER},
+		create_date =
+		#{createDate,jdbcType=TIMESTAMP},
+		update_date = #{updateDate,jdbcType=TIMESTAMP},
+		del_flag = #{delFlag,jdbcType=BIT}
+		where id = #{id,jdbcType=VARCHAR}
+	</update>
+
+	<!-- custom method -->
+
+	<select id="selectChildReady" parameterType="java.lang.String" resultType="java.lang.Boolean">
+		select count(1) = sum(child_size) + 1
+		from tx_description
+		where root = #{root,jdbcType=VARCHAR}
+	</select>
+
+	<select id="selectInfosReady" parameterType="java.lang.String" resultType="java.lang.Boolean">
+		select count(1) = (select sum(infos_size) from tx_description where root = #{root,jdbcType=VARCHAR})
+		from tx_task_info
+		where description_id in (
+		select id from tx_description where root = #{root,jdbcType=VARCHAR}
+		)
+	</select>
+
+	<resultMap extends="ResultMapWithBLOBs" id="ResultMapWithTaskInfoAndBLOBs" type="cn.homjie.kotor.model.TxDescription">
+		<collection property="infos" column="id" ofType="cn.homjie.kotor.model.TxTaskInfoWithBLOBs"
+					select="cn.homjie.kotor.dao.TxTaskInfoDao.selectByDescriptionId"/>
+	</resultMap>
+
+	<select id="selectTotalByRoot" parameterType="java.lang.String" resultMap="ResultMapWithTaskInfoAndBLOBs">
+		select
+		<include refid="Base_Column_List"/>
+		,
+		<include refid="Blob_Column_List"/>
+		from tx_description
+		where root = #{root,jdbcType=VARCHAR}
+		order by `level` asc, `order` asc
+	</select>
+</mapper>

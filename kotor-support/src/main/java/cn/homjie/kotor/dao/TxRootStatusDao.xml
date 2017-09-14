@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.homjie.kotor.dao.TxRootStatusDao">
+
+	<resultMap id="BaseResultMap" type="cn.homjie.kotor.model.TxRootStatus">
+		<id column="root" jdbcType="VARCHAR" property="root"/>
+		<result column="index" jdbcType="INTEGER" property="index"/>
+		<result column="status" jdbcType="VARCHAR" property="status"/>
+		<result column="times" jdbcType="INTEGER" property="times"/>
+		<result column="limit" jdbcType="INTEGER" property="limit"/>
+	</resultMap>
+
+	<resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="cn.homjie.kotor.model.TxRootStatus">
+		<result column="stack_trace" jdbcType="LONGVARCHAR" property="stackTrace"/>
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		root, `index`, `status`, times, `limit`
+	</sql>
+
+	<sql id="Blob_Column_List">
+		stack_trace
+	</sql>
+
+	<select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
+		select
+		<include refid="Base_Column_List"/>
+		,
+		<include refid="Blob_Column_List"/>
+		from tx_root_status
+		where root = #{root,jdbcType=VARCHAR}
+	</select>
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+		delete from tx_root_status
+		where root = #{root,jdbcType=VARCHAR}
+	</delete>
+
+	<insert id="insert" parameterType="cn.homjie.kotor.model.TxRootStatus">
+		insert into tx_root_status (
+		root, `index`, `status`, times, `limit`, stack_trace
+		)
+		values (
+		#{root,jdbcType=VARCHAR},
+		#{index,jdbcType=INTEGER},
+		#{status,jdbcType=VARCHAR},
+		#{times,jdbcType=INTEGER},
+		#{limit,jdbcType=INTEGER},
+		#{stackTrace,jdbcType=LONGVARCHAR}
+		)
+	</insert>
+
+	<insert id="insertSelective" parameterType="cn.homjie.kotor.model.TxRootStatus">
+		insert into tx_root_status
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="root != null">
+				root,
+			</if>
+			<if test="index != null">
+				`index`,
+			</if>
+			<if test="status != null">
+				`status`,
+			</if>
+			<if test="times != null">
+				times,
+			</if>
+			<if test="limit != null">
+				`limit`,
+			</if>
+			<if test="stackTrace != null">
+				stack_trace,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="root != null">
+				#{root,jdbcType=VARCHAR},
+			</if>
+			<if test="index != null">
+				#{index,jdbcType=INTEGER},
+			</if>
+			<if test="status != null">
+				#{status,jdbcType=VARCHAR},
+			</if>
+			<if test="times != null">
+				#{times,jdbcType=INTEGER},
+			</if>
+			<if test="limit != null">
+				#{limit,jdbcType=INTEGER},
+			</if>
+			<if test="stackTrace != null">
+				#{stackTrace,jdbcType=LONGVARCHAR},
+			</if>
+		</trim>
+	</insert>
+
+	<update id="updateByPrimaryKeySelective" parameterType="cn.homjie.kotor.model.TxRootStatus">
+		update tx_root_status
+		<set>
+			<if test="index != null">
+				`index` = #{index,jdbcType=INTEGER},
+			</if>
+			<if test="status != null">
+				`status` = #{status,jdbcType=VARCHAR},
+			</if>
+			<if test="times != null">
+				times = #{times,jdbcType=INTEGER},
+			</if>
+			<if test="limit != null">
+				`limit` = #{limit,jdbcType=INTEGER},
+			</if>
+			<if test="stackTrace != null">
+				stack_trace = #{stackTrace,jdbcType=LONGVARCHAR},
+			</if>
+		</set>
+		where root = #{root,jdbcType=VARCHAR}
+	</update>
+
+	<update id="updateByPrimaryKeyWithBLOBs" parameterType="cn.homjie.kotor.model.TxRootStatus">
+		update tx_root_status
+		set
+		`index` = #{index,jdbcType=INTEGER},
+		`status` = #{status,jdbcType=VARCHAR},
+		times = #{times,jdbcType=INTEGER},
+		`limit` = #{limit,jdbcType=INTEGER},
+		stack_trace = #{stackTrace,jdbcType=LONGVARCHAR}
+		where root = #{root,jdbcType=VARCHAR}
+	</update>
+
+	<update id="updateByPrimaryKey" parameterType="cn.homjie.kotor.model.TxRootStatus">
+		update tx_root_status
+		set
+		`index` = #{index,jdbcType=INTEGER},
+		`status` = #{status,jdbcType=VARCHAR},
+		times = #{times,jdbcType=INTEGER},
+		`limit` = #{limit,jdbcType=INTEGER}
+		where root = #{root,jdbcType=VARCHAR}
+	</update>
+
+	<!-- custom method -->
+
+	<select id="selectBaseByStatusList" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List"/>
+		from tx_root_status
+		where times &lt; `limit`
+		<if test="statusList != null and statusList.size() > 0">
+			and `status` in (
+			<foreach item="status" index="index" collection="statusList" separator=",">#{status,jdbcType=VARCHAR}</foreach>
+			)
+		</if>
+		order by times asc, `index` asc
+	</select>
+
+</mapper>

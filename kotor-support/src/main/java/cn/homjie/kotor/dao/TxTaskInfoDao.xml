@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.homjie.kotor.dao.TxTaskInfoDao">
+
+	<resultMap id="BaseResultMap" type="cn.homjie.kotor.model.TxTaskInfo">
+		<id column="id" jdbcType="VARCHAR" property="id"/>
+		<result column="order" jdbcType="INTEGER" property="order"/>
+		<result column="success" jdbcType="BIT" property="success"/>
+		<result column="task_status" jdbcType="VARCHAR" property="taskStatus"/>
+		<result column="description_id" jdbcType="VARCHAR" property="descriptionId"/>
+		<result column="child_description" jdbcType="VARCHAR" property="childDescription"/>
+	</resultMap>
+
+	<resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="cn.homjie.kotor.model.TxTaskInfoWithBLOBs">
+		<result column="result" jdbcType="LONGVARBINARY" property="result"/>
+		<result column="stack_trace" jdbcType="LONGVARCHAR" property="stackTrace"/>
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		id, `order`, success, task_status, description_id, child_description
+	</sql>
+
+	<sql id="Blob_Column_List">
+		result, stack_trace
+	</sql>
+
+	<select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
+		select
+		<include refid="Base_Column_List"/>
+		,
+		<include refid="Blob_Column_List"/>
+		from tx_task_info
+		where id = #{id,jdbcType=VARCHAR}
+	</select>
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+		delete from tx_task_info
+		where id = #{id,jdbcType=VARCHAR}
+	</delete>
+
+	<insert id="insert" parameterType="cn.homjie.kotor.model.TxTaskInfoWithBLOBs">
+		insert into tx_task_info (id, `order`, success,
+		task_status, description_id,
+		child_description,
+		result, stack_trace)
+		values (#{id,jdbcType=VARCHAR}, #{order,jdbcType=INTEGER},
+		#{success,jdbcType=BIT},
+		#{taskStatus,jdbcType=VARCHAR}, #{descriptionId,jdbcType=VARCHAR},
+		#{childDescription,jdbcType=VARCHAR},
+		#{result,jdbcType=LONGVARBINARY}, #{stackTrace,jdbcType=LONGVARCHAR})
+	</insert>
+
+	<insert id="insertSelective" parameterType="cn.homjie.kotor.model.TxTaskInfoWithBLOBs">
+		insert into tx_task_info
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="order != null">
+				`order`,
+			</if>
+			<if test="success != null">
+				success,
+			</if>
+			<if test="taskStatus != null">
+				task_status,
+			</if>
+			<if test="descriptionId != null">
+				description_id,
+			</if>
+			<if test="childDescription != null">
+				child_description,
+			</if>
+			<if test="result != null">
+				result,
+			</if>
+			<if test="stackTrace != null">
+				stack_trace,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=VARCHAR},
+			</if>
+			<if test="order != null">
+				#{order,jdbcType=INTEGER},
+			</if>
+			<if test="success != null">
+				#{success,jdbcType=BIT},
+			</if>
+			<if test="taskStatus != null">
+				#{taskStatus,jdbcType=VARCHAR},
+			</if>
+			<if test="descriptionId != null">
+				#{descriptionId,jdbcType=VARCHAR},
+			</if>
+			<if test="childDescription != null">
+				#{childDescription,jdbcType=VARCHAR},
+			</if>
+			<if test="result != null">
+				#{result,jdbcType=LONGVARBINARY},
+			</if>
+			<if test="stackTrace != null">
+				#{stackTrace,jdbcType=LONGVARCHAR},
+			</if>
+		</trim>
+	</insert>
+
+	<update id="updateByPrimaryKeySelective" parameterType="cn.homjie.kotor.model.TxTaskInfoWithBLOBs">
+		update tx_task_info
+		<set>
+			<if test="order != null">
+				`order` = #{order,jdbcType=INTEGER},
+			</if>
+			<if test="success != null">
+				success = #{success,jdbcType=BIT},
+			</if>
+			<if test="taskStatus != null">
+				task_status = #{taskStatus,jdbcType=VARCHAR},
+			</if>
+			<if test="descriptionId != null">
+				description_id = #{descriptionId,jdbcType=VARCHAR},
+			</if>
+			<if test="childDescription != null">
+				child_description = #{childDescription,jdbcType=VARCHAR},
+			</if>
+			<if test="result != null">
+				result = #{result,jdbcType=LONGVARBINARY},
+			</if>
+			<if test="stackTrace != null">
+				stack_trace = #{stackTrace,jdbcType=LONGVARCHAR},
+			</if>
+		</set>
+		where id = #{id,jdbcType=VARCHAR}
+	</update>
+
+	<update id="updateByPrimaryKeyWithBLOBs" parameterType="cn.homjie.kotor.model.TxTaskInfoWithBLOBs">
+		update tx_task_info
+		set `order` = #{order,jdbcType=INTEGER},
+		success = #{success,jdbcType=BIT},
+		task_status = #{taskStatus,jdbcType=VARCHAR},
+		description_id =
+		#{descriptionId,jdbcType=VARCHAR},
+		child_description = #{childDescription,jdbcType=VARCHAR},
+		result =
+		#{result,jdbcType=LONGVARBINARY},
+		stack_trace = #{stackTrace,jdbcType=LONGVARCHAR}
+		where id = #{id,jdbcType=VARCHAR}
+	</update>
+
+	<update id="updateByPrimaryKey" parameterType="cn.homjie.kotor.model.TxTaskInfo">
+		update tx_task_info
+		set `order` = #{order,jdbcType=INTEGER},
+		success =
+		#{success,jdbcType=BIT},
+		task_status = #{taskStatus,jdbcType=VARCHAR},
+		description_id =
+		#{descriptionId,jdbcType=VARCHAR},
+		child_description = #{childDescription,jdbcType=VARCHAR}
+		where id =
+		#{id,jdbcType=VARCHAR}
+	</update>
+
+	<!-- custom method -->
+
+	<select id="selectByDescriptionId" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
+		select
+		<include refid="Base_Column_List"/>
+		,
+		<include refid="Blob_Column_List"/>
+		from tx_task_info
+		where description_id = #{descriptionId,jdbcType=VARCHAR}
+	</select>
+
+</mapper>
