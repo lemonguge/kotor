@@ -3,8 +3,6 @@ package cn.homjie.kotor.mq;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
-import org.springframework.amqp.rabbit.core.RabbitTemplate.ConfirmCallback;
-import org.springframework.amqp.rabbit.support.CorrelationData;
 
 /**
  * @param <T>
@@ -26,19 +24,15 @@ public abstract class AbstractSender<T> {
 	public void send(T message) {
 		try {
 			if (!rabbitTemplate.isConfirmListener())
-				rabbitTemplate.setConfirmCallback(new ConfirmCallback() {
-					@Override
-					public void confirm(CorrelationData correlationData, boolean ack, String cause) {
-						if (!ack) {
-							rabbitTemplate.convertAndSend(message);
-						}
+				rabbitTemplate.setConfirmCallback((correlationData, ack, cause) -> {
+					if (!ack) {
+						rabbitTemplate.convertAndSend(message);
 					}
 				});
 			rabbitTemplate.convertAndSend(message);
 		} catch (Exception e) {
 			logger.error("消息发送失败：" + e);
 		}
-
 	}
 
 }

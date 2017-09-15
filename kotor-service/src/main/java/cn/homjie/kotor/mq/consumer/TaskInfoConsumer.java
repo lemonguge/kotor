@@ -6,6 +6,7 @@ import cn.homjie.kotor.model.TxTaskInfoWithBLOBs;
 import cn.homjie.kotor.mq.AbstractConsumer;
 import cn.homjie.kotor.util.IdGen;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 /**
  * @Class TaskInfoConsumer
@@ -13,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @Author JieHong
  * @Date 2017年3月11日 下午4:59:51
  */
+@Component
 public class TaskInfoConsumer extends AbstractConsumer<TxTaskInfoWithBLOBs> {
 
 	@Autowired

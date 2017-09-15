@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: kotor
+  rabbitmq:
+    host: mq.fengdai.org
+    port: 5672
+    username: guest
+    password: guest
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://daddress.db.360fengdai.com:3306/fengdai_transaction?useUnicode=true&characterEncoding=utf-8
+    username: root
+    password: kse20429hfds23240azxws

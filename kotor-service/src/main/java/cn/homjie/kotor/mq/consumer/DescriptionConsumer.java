@@ -6,6 +6,7 @@ import cn.homjie.kotor.model.TxDescription;
 import cn.homjie.kotor.model.TxRootStatus;
 import cn.homjie.kotor.mq.AbstractConsumer;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.Date;
 
@@ -17,6 +18,7 @@ import static cn.homjie.kotor.enums.RootStatus.CHECK_WAIT;
  * @Author JieHong
  * @Date 2017年3月11日 下午4:59:40
  */
+@Component
 public class DescriptionConsumer extends AbstractConsumer<TxDescription> {
 
 	public static final int RETRY_LIMIT = 15;
