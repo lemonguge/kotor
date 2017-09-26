@@ -5,13 +5,15 @@ import cn.homjie.kotor.service.TransactionService;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import java.lang.annotation.Annotation;
 
 public class KotorConfiguration {
 
-	private static final KotorConfiguration instance = new KotorConfiguration();
+	private static final KotorConfiguration INSTANCE = new KotorConfiguration();
 	private static Logger log = LoggerFactory.getLogger(KotorConfiguration.class);
+
 	private TransactionService transactionService;
 
 	private String projectPackagePrefix;
@@ -22,29 +24,33 @@ public class KotorConfiguration {
 	}
 
 	/**
-	 * @param transactionService
 	 * @Title register
 	 * @Description 注册事务服务
 	 * @Author JieHong
 	 * @Date 2017年3月11日 下午5:12:25
 	 */
-	public static void register(TransactionService transactionService) {
-		if (transactionService == null)
+	public static void register() {
+		if (INSTANCE.transactionService != null)
 			return;
-		instance.transactionService = transactionService;
+		ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("consumer-beans.xml");
+		context.start();
+		TransactionService transactionService = context.getBean(TransactionService.class);
+		if (transactionService == null)
+			throw new RuntimeException("transaction service register failure");
+		INSTANCE.transactionService = transactionService;
 		log.info("transaction service register ok");
 	}
 
 	public static TransactionService transactionService() {
-		return instance.transactionService;
+		return INSTANCE.transactionService;
 	}
 
 	public static void addMark(Class<? extends Annotation> mark) {
-		instance.markHandler.register(mark);
+		INSTANCE.markHandler.register(mark);
 	}
 
 	public static DistributedMarkHandler markHandler() {
-		return instance.markHandler;
+		return INSTANCE.markHandler;
 	}
 
 	/**
@@ -55,15 +61,15 @@ public class KotorConfiguration {
 	 * @Date 2017年4月12日 上午9:44:16
 	 */
 	public static void projectPackagePrefix(String projectPackagePrefix) {
-		instance.projectPackagePrefix = projectPackagePrefix;
+		INSTANCE.projectPackagePrefix = projectPackagePrefix;
 	}
 
 	public static boolean isBelongProject(String className) {
-		if (StringUtils.isBlank(instance.projectPackagePrefix))
+		if (StringUtils.isBlank(INSTANCE.projectPackagePrefix))
 			return true;
 		if (StringUtils.isBlank(className))
 			return false;
 
-		return className.startsWith(instance.projectPackagePrefix);
+		return className.startsWith(INSTANCE.projectPackagePrefix);
 	}
 }
