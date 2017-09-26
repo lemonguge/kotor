@@ -12,8 +12,10 @@ import org.springframework.amqp.support.converter.SimpleMessageConverter;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ImportResource;
 
 @MapperScan("cn.homjie.kotor.dao")
+@ImportResource("classpath:provider-beans.xml")
 @SpringBootApplication
 public class KotorApplication {
 
@@ -82,20 +84,20 @@ public class KotorApplication {
 	}
 
 	@Bean
-	public SimpleMessageListenerContainer listenerDescriptionContainer(ConnectionFactory connectionFactory, MessageListener descriptionConsumer) {
-		SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
-		container.setConnectionFactory(connectionFactory);
-		container.setQueueNames(KOTOR_DISTRIBUTED_DESCRIPTION);
-		container.setMessageListener(descriptionConsumer);
-		return container;
+	public SimpleMessageListenerContainer listenerDescriptionContainer(ConnectionFactory factory, MessageListener descriptionConsumer) {
+		return container(factory, descriptionConsumer, KOTOR_DISTRIBUTED_DESCRIPTION);
 	}
 
 	@Bean
-	public SimpleMessageListenerContainer listenerTaskInfoContainer(ConnectionFactory connectionFactory, MessageListener taskInfoConsumer) {
+	public SimpleMessageListenerContainer listenerTaskInfoContainer(ConnectionFactory factory, MessageListener taskInfoConsumer) {
+		return container(factory, taskInfoConsumer, KOTOR_DISTRIBUTED_TASK_INFO);
+	}
+
+	private SimpleMessageListenerContainer container(ConnectionFactory connectionFactory, MessageListener listener, String... queueName) {
 		SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
 		container.setConnectionFactory(connectionFactory);
-		container.setQueueNames(KOTOR_DISTRIBUTED_TASK_INFO);
-		container.setMessageListener(taskInfoConsumer);
+		container.setQueueNames(queueName);
+		container.setMessageListener(listener);
 		return container;
 	}
 }

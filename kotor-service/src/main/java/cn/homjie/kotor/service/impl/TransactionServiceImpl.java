@@ -5,7 +5,6 @@ import cn.homjie.kotor.model.TxTaskInfoWithBLOBs;
 import cn.homjie.kotor.mq.send.DescriptionSender;
 import cn.homjie.kotor.mq.send.TaskInfoSender;
 import cn.homjie.kotor.service.TransactionService;
-import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 
@@ -15,7 +14,6 @@ import javax.annotation.Resource;
  * @Author JieHong
  * @Date 2017年3月11日 下午5:00:35
  */
-@Service
 public class TransactionServiceImpl implements TransactionService {
 
 	@Resource

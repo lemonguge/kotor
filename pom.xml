@@ -24,6 +24,8 @@
 		<dubbo.version>2.5.5</dubbo.version>
 		<redisson.version>3.5.1</redisson.version>
 		<commons-lang3.version>3.6</commons-lang3.version>
+		<zookeeper.version>3.4.8</zookeeper.version>
+		<zkclient.version>0.10</zkclient.version>
 	</properties>
 
 	<dependencyManagement>
@@ -32,6 +34,12 @@
 				<groupId>com.alibaba</groupId>
 				<artifactId>dubbo</artifactId>
 				<version>${dubbo.version}</version>
+				<exclusions>
+					<exclusion>
+						<groupId>org.jboss.netty</groupId>
+						<artifactId>netty</artifactId>
+					</exclusion>
+				</exclusions>
 			</dependency>
 			<dependency>
 				<groupId>org.redisson</groupId>
@@ -47,6 +55,31 @@
 				<groupId>org.apache.commons</groupId>
 				<artifactId>commons-lang3</artifactId>
 				<version>${commons-lang3.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.zookeeper</groupId>
+				<artifactId>zookeeper</artifactId>
+				<version>${zookeeper.version}</version>
+				<scope>compile</scope>
+				<exclusions>
+					<exclusion>
+						<groupId>org.slf4j</groupId>
+						<artifactId>slf4j-api</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>org.slf4j</groupId>
+						<artifactId>slf4j-log4j12</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>log4j</groupId>
+						<artifactId>log4j</artifactId>
+					</exclusion>
+				</exclusions>
+			</dependency>
+			<dependency>
+				<groupId>com.101tec</groupId>
+				<artifactId>zkclient</artifactId>
+				<version>${zkclient.version}</version>
 			</dependency>
 			<!-- module -->
 			<dependency>
